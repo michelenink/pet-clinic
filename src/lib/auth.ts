@@ -29,14 +29,16 @@ export const auth = betterAuth({
       });
 
       //TODO: ao adicionar mais de uma clinica, precisa retornar todas as clinicas
-      const clinic = clinics[0];
+      const clinic = clinics?.[0];
       return {
         user: {
           ...user,
-          clinic: {
-            clinicId: clinic.clinicId,
-            name: clinic.clinic.name,
-          },
+          clinic: clinic?.clinicId
+            ? {
+                clinicId: clinic?.clinicId,
+                name: clinic?.clinic?.name,
+              }
+            : undefined,
         },
         session,
       };
