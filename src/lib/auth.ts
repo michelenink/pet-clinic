@@ -35,7 +35,7 @@ export const auth = betterAuth({
           ...user,
           clinic: clinic?.clinicId
             ? {
-                clinicId: clinic?.clinicId,
+                id: clinic?.clinicId,
                 name: clinic?.clinic?.name,
               }
             : undefined,
