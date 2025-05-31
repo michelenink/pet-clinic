@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { Label } from "@/components/ui/label";
 import { db } from "@/db";
 import { usersToClinicsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -30,6 +31,7 @@ const DashboardPage = async () => {
       <h1>{session?.user?.name}</h1>
       <h1>{session?.user?.email}</h1>
       <SignOutButton />
+      <Label>Dashboard</Label>
     </div>
   );
 };
