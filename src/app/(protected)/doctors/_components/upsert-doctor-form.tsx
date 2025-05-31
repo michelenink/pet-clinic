@@ -32,8 +32,8 @@ import {
 } from "@/components/ui/select";
 
 import { medicalSpecialties } from "../_constants";
-import { TimeSelectField } from "./fields/TimeSelectField";
-import { WeekDaySelectField } from "./fields/WeekdaySelectField";
+import { TimeSelectField } from "./fields/time-select-field";
+import { WeekDaySelectField } from "./fields/weekday-select-field";
 
 const formSchema = z
   .object({
