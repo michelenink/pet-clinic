@@ -1,7 +1,10 @@
 "use client";
 
 import { MoreVerticalIcon, TrashIcon } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
 
+import { deleteAppointment } from "@/actions/delete-appointment";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,6 +49,20 @@ interface AppointmentsTableActionsProps {
 const AppointmentsTableActions = ({
   appointment,
 }: AppointmentsTableActionsProps) => {
+  const deleteAppointmentAction = useAction(deleteAppointment, {
+    onSuccess: () => {
+      toast.success("Agendamento deletado com sucesso.");
+    },
+    onError: () => {
+      toast.error("Erro ao deletar agendamento.");
+    },
+  });
+
+  const handleDeleteAppointmentClick = () => {
+    if (!appointment) return;
+    deleteAppointmentAction.execute({ id: appointment.id });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -75,7 +92,9 @@ const AppointmentsTableActions = ({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction>Deletar</AlertDialogAction>
+              <AlertDialogAction onClick={handleDeleteAppointmentClick}>
+                Deletar
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
