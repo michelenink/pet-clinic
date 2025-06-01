@@ -43,6 +43,12 @@ export const deletePatient = actionClient
       );
     }
 
+    if (patient.clinicId !== session.user.clinic.id) {
+      throw new Error(
+        "Paciente não encontrado ou você não tem permissão para excluí-lo.",
+      );
+    }
+
     await db.delete(patientsTable).where(eq(patientsTable.id, id));
 
     revalidatePath("/patients");
