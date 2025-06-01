@@ -35,7 +35,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { patientsTable } from "@/db/schema";
 
-import { UpsertPatientForm } from "./upsert-patient-form";
+import UpsertPatientForm from "./upsert-patient-form";
 
 interface PatientCardProps {
   patient: typeof patientsTable.$inferSelect;

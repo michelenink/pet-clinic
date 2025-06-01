@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { UpsertPatientForm } from "./upsert-patient-form";
+import UpsertPatientForm from "./upsert-patient-form";
 
 export function AddPatientButton() {
   const [isOpen, setIsOpen] = useState(false);
