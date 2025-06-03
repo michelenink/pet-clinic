@@ -16,6 +16,9 @@ export const usersTable = pgTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),
   image: text("image"),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  plan: text("plan"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
@@ -114,6 +117,7 @@ export const doctorsTable = pgTable("doctors", {
     .references(() => clinicsTable.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   avatarImageUrl: text("avatar_image_url"),
+  // 1 - Monday, 2 - Tuesday, 3 - Wednesday, 4 - Thursday, 5 - Friday, 6 - Saturday, 0 - Sunday
   availableFromWeekDay: integer("available_from_week_day").notNull(),
   availableToWeekDay: integer("available_to_week_day").notNull(),
   availableFromTime: time("available_from_time").notNull(),
@@ -152,8 +156,6 @@ export const patientsTable = pgTable("patients", {
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),
-  // Se eu quiser arquivar o cliente
-  // isArchived: boolean("is_archived").default(false),
 });
 
 export const patientsTableRelations = relations(
@@ -170,6 +172,7 @@ export const patientsTableRelations = relations(
 export const appointmentsTable = pgTable("appointments", {
   id: uuid("id").defaultRandom().primaryKey(),
   date: timestamp("date").notNull(),
+  appointmentPriceInCents: integer("appointment_price_in_cents").notNull(),
   clinicId: uuid("clinic_id")
     .notNull()
     .references(() => clinicsTable.id, { onDelete: "cascade" }),
@@ -179,7 +182,6 @@ export const appointmentsTable = pgTable("appointments", {
   doctorId: uuid("doctor_id")
     .notNull()
     .references(() => doctorsTable.id, { onDelete: "cascade" }),
-  appointmentPriceInCents: integer("appointment_price_in_cents").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

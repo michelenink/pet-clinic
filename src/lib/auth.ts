@@ -25,6 +25,7 @@ export const auth = betterAuth({
         where: eq(schema.usersToClinicsTable.userId, user.id),
         with: {
           clinic: true,
+          user: true,
         },
       });
 
@@ -33,6 +34,7 @@ export const auth = betterAuth({
       return {
         user: {
           ...user,
+          plan: clinic?.user?.plan,
           clinic: clinic?.clinicId
             ? {
                 id: clinic?.clinicId,
