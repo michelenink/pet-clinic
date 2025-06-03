@@ -21,20 +21,26 @@ export const auth = betterAuth({
   },
   plugins: [
     customSession(async ({ user, session }) => {
-      const clinics = await db.query.usersToClinicsTable.findMany({
-        where: eq(schema.usersToClinicsTable.userId, user.id),
-        with: {
-          clinic: true,
-          user: true,
-        },
-      });
+      //TODO colocar um cache
+      const [userData, clinics] = await Promise.all([
+        db.query.usersTable.findFirst({
+          where: eq(schema.usersTable.id, user.id),
+        }),
+        db.query.usersToClinicsTable.findMany({
+          where: eq(schema.usersToClinicsTable.userId, user.id),
+          with: {
+            clinic: true,
+            user: true,
+          },
+        }),
+      ]);
 
       //TODO: ao adicionar mais de uma clinica, precisa retornar todas as clinicas
       const clinic = clinics?.[0];
       return {
         user: {
           ...user,
-          plan: clinic?.user?.plan,
+          plan: userData?.plan,
           clinic: clinic?.clinicId
             ? {
                 id: clinic?.clinicId,
