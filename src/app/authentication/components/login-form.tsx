@@ -59,8 +59,22 @@ const LoginForm = () => {
         onSuccess: () => {
           router.push("/dashboard");
         },
-        onError: () => {
-          toast.error("E-mail ou senha inválidos");
+        onError: (ctx) => {
+          if (
+            ctx.error.status === 403 &&
+            ctx.error.message.includes("verify your email")
+          ) {
+            toast.error(
+              "Por favor, verifique seu e-mail antes de fazer login.",
+              {
+                description:
+                  "Enviamos um link de confirmação para o seu endereço de e-mail.",
+              },
+            );
+            // TODO: offer to resend verification email authClient.sendVerificationEmail()
+          } else {
+            toast.error("E-mail ou senha inválidos");
+          }
         },
       },
     );
@@ -152,6 +166,11 @@ const LoginForm = () => {
                 </svg>
                 Entrar com Google
               </Button>
+              <div className="mt-4 text-center text-sm">
+                <a href="/authentication/forgot-password" className="underline">
+                  Esqueceu a senha?
+                </a>
+              </div>
             </div>
           </CardFooter>
         </form>
