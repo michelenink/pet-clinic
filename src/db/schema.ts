@@ -106,6 +106,7 @@ export const usersToClinicsTableRelations = relations(
 export const clinicsTableRelations = relations(clinicsTable, ({ many }) => ({
   doctors: many(veterinariansTable),
   patients: many(patientsTable),
+  pets: many(petsTable),
   appointments: many(appointmentsTable),
   usersToClinics: many(usersToClinicsTable),
 }));
@@ -151,8 +152,9 @@ export const patientsTable = pgTable("patients", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   phoneNumber: text("phone_number").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  cpf: text("cpf").unique(),
   sex: patientSexEnum("sex").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),
@@ -165,9 +167,42 @@ export const patientsTableRelations = relations(
       fields: [patientsTable.clinicId],
       references: [clinicsTable.id],
     }),
-    appointments: many(appointmentsTable),
+    pets: many(petsTable),
   }),
 );
+
+export const petSexEnum = pgEnum("pet_sex", ["male", "female", "undefined"]);
+
+export const petsTable = pgTable("pets", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  clinicId: uuid("clinic_id")
+    .notNull()
+    .references(() => clinicsTable.id, { onDelete: "cascade" }),
+  ownerId: uuid("owner_id")
+    .notNull()
+    .references(() => patientsTable.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  species: text("species").notNull(),
+  breed: text("breed"),
+  sex: petSexEnum("sex").notNull(),
+  dateOfBirth: timestamp("date_of_birth"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const petsTableRelations = relations(petsTable, ({ one, many }) => ({
+  clinic: one(clinicsTable, {
+    fields: [petsTable.clinicId],
+    references: [clinicsTable.id],
+  }),
+  owner: one(patientsTable, {
+    fields: [petsTable.ownerId],
+    references: [patientsTable.id],
+  }),
+  appointments: many(appointmentsTable),
+}));
 
 export const appointmentsTable = pgTable("appointments", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -176,9 +211,9 @@ export const appointmentsTable = pgTable("appointments", {
   clinicId: uuid("clinic_id")
     .notNull()
     .references(() => clinicsTable.id, { onDelete: "cascade" }),
-  patientId: uuid("patient_id")
+  petId: uuid("pet_id")
     .notNull()
-    .references(() => patientsTable.id, { onDelete: "cascade" }),
+    .references(() => petsTable.id, { onDelete: "cascade" }),
   doctorId: uuid("doctor_id")
     .notNull()
     .references(() => veterinariansTable.id, { onDelete: "cascade" }),
@@ -195,9 +230,9 @@ export const appointmentsTableRelations = relations(
       fields: [appointmentsTable.clinicId],
       references: [clinicsTable.id],
     }),
-    patient: one(patientsTable, {
-      fields: [appointmentsTable.patientId],
-      references: [patientsTable.id],
+    pet: one(petsTable, {
+      fields: [appointmentsTable.petId],
+      references: [petsTable.id],
     }),
     doctor: one(veterinariansTable, {
       fields: [appointmentsTable.doctorId],
