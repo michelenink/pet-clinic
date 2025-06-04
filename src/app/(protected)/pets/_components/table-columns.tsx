@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
-import { ArrowUpDown, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpDown, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -78,22 +78,19 @@ const PetActions: React.FC<PetActionsProps> = ({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Abrir menu</span>
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="ghost" size="icon">
+            <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Ações</DropdownMenuLabel>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>{pet.name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
             <Pencil className="mr-2 h-4 w-4" />
             Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setIsDeleteDialogOpen(true)}
-            className="text-red-600 hover:!text-red-700 focus:!bg-red-100 focus:!text-red-700"
-          >
+          <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
             <Trash2 className="mr-2 h-4 w-4" />
             Excluir
           </DropdownMenuItem>

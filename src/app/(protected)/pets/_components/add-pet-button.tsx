@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ export function AddPetButton({ patients, userClinicId }: AddPetButtonProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
-          <PlusCircle className="mr-2 size-4" />
+          <Plus className="mr-2 size-4" />
           Adicionar Pet
         </Button>
       </DialogTrigger>

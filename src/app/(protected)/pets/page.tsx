@@ -57,10 +57,8 @@ export default async function PetsPage() {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Pacientes</PageTitle>
-          <PageDescription>
-            Gerencie os pacientes da sua clínica.
-          </PageDescription>
+          <PageTitle>Pets</PageTitle>
+          <PageDescription>Gerencie os pets da sua clínica.</PageDescription>
         </PageHeaderContent>
         <PageActions>
           <AddPetButton
