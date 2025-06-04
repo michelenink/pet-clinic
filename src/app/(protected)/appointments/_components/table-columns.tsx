@@ -8,7 +8,7 @@ import { appointmentsTable } from "@/db/schema";
 
 import AppointmentsTableActions from "./table-actions";
 
-type AppointmentWithRelations = typeof appointmentsTable.$inferSelect & {
+export type AppointmentWithRelations = typeof appointmentsTable.$inferSelect & {
   patient: {
     id: string;
     name: string;

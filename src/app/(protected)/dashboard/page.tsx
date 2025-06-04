@@ -14,10 +14,14 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import { ThemeToggleButton } from "@/components/ui/theme-toggle-button";
 import { getDashboard } from "@/data/get-dashboard";
 import { auth } from "@/lib/auth";
 
-import { appointmentsTableColumns } from "../appointments/_components/table-columns";
+import {
+  appointmentsTableColumns,
+  type AppointmentWithRelations,
+} from "../appointments/_components/table-columns";
 import AppointmentsChart from "./components/appointments-chart";
 import DatePicker from "./components/date-picker";
 import StatsCards from "./components/stats-card";
@@ -73,6 +77,21 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
     },
   });
 
+  const dashboardTodayAppointments: AppointmentWithRelations[] =
+    todayAppointments.map((appt) => {
+      const owner = appt.pet?.owner;
+      return {
+        ...appt,
+        patient: {
+          id: owner?.id || "N/A",
+          name: owner?.name || "N/A",
+          email: "",
+          phoneNumber: "",
+          sex: "male" as "male" | "female",
+        },
+      } as AppointmentWithRelations;
+    });
+
   return (
     <PageContainer>
       <PageHeader>
@@ -84,6 +103,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         </PageHeaderContent>
         <PageActions>
           <DatePicker />
+          <ThemeToggleButton />
         </PageActions>
       </PageHeader>
       <PageContent>
@@ -93,11 +113,11 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
           totalPatients={totalPatients.total}
           totalDoctors={totalDoctors.total}
         />
-        <div className="grid grid-cols-[2.25fr_1fr] gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[2.25fr_1fr]">
           <AppointmentsChart dailyAppointmentsData={dailyAppointmentsData} />
           <TopDoctors doctors={topDoctors} />
         </div>
-        <div className="grid grid-cols-[2.25fr_1fr] gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[2.25fr_1fr]">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -110,7 +130,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             <CardContent>
               <DataTable
                 columns={appointmentsTableColumns}
-                data={todayAppointments}
+                data={dashboardTodayAppointments}
               />
             </CardContent>
           </Card>
