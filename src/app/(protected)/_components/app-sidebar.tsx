@@ -2,6 +2,7 @@
 
 import {
   CalendarDays,
+  Dog,
   Gem,
   LayoutDashboard,
   LogOut,
@@ -51,9 +52,14 @@ const items = [
     icon: Stethoscope,
   },
   {
-    title: "Pacientes",
+    title: "Tutor(a)s",
     url: "/patients",
     icon: UserRound,
+  },
+  {
+    title: "Pets",
+    url: "/pets",
+    icon: Dog,
   },
 ];
 

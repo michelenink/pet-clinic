@@ -41,6 +41,9 @@ const AppointmentsPage = async () => {
   const [patients, doctors, appointments] = await Promise.all([
     db.query.patientsTable.findMany({
       where: eq(patientsTable.clinicId, session.user.clinic.id),
+      with: {
+        pets: true,
+      },
     }),
     db.query.veterinariansTable.findMany({
       where: eq(veterinariansTable.clinicId, session.user.clinic.id),
@@ -48,7 +51,11 @@ const AppointmentsPage = async () => {
     db.query.appointmentsTable.findMany({
       where: eq(appointmentsTable.clinicId, session.user.clinic.id),
       with: {
-        patient: true,
+        pet: {
+          with: {
+            owner: true,
+          },
+        },
         doctor: true,
       },
     }),

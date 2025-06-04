@@ -5,12 +5,14 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { patientsTable, veterinariansTable } from "@/db/schema";
+import { patientsTable, petsTable, veterinariansTable } from "@/db/schema";
 
-import AddAppointmentForm from "./app-appointment-form";
+import AddAppointmentForm from "./add-appointment-form";
 
 interface AddAppointmentButtonProps {
-  patients: (typeof patientsTable.$inferSelect)[];
+  patients: (typeof patientsTable.$inferSelect & {
+    pets: (typeof petsTable.$inferSelect)[];
+  })[];
   doctors: (typeof veterinariansTable.$inferSelect)[];
 }
 

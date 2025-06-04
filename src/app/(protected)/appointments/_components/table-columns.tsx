@@ -21,13 +21,26 @@ type AppointmentWithRelations = typeof appointmentsTable.$inferSelect & {
     name: string;
     specialty: string;
   };
+  pet: {
+    id: string;
+    name: string;
+    owner: {
+      id: string;
+      name: string;
+    };
+  };
 };
 
 export const appointmentsTableColumns: ColumnDef<AppointmentWithRelations>[] = [
   {
-    id: "patient",
-    accessorKey: "patient.name",
-    header: "Paciente",
+    id: "pet",
+    accessorKey: "pet.name",
+    header: "Pet",
+  },
+  {
+    id: "tutor",
+    accessorKey: "pet.owner.name",
+    header: "Tutor(a)",
   },
   {
     id: "doctor",

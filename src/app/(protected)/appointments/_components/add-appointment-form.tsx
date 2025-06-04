@@ -45,12 +45,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { patientsTable, veterinariansTable } from "@/db/schema";
+import { patientsTable, petsTable, veterinariansTable } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   patientId: z.string().min(1, {
-    message: "Paciente é obrigatório.",
+    message: "Tutor(a) é obrigatório.",
+  }),
+  petId: z.string().min(1, {
+    message: "Pet é obrigatório.",
   }),
   doctorId: z.string().min(1, {
     message: "Veterinário é obrigatório.",
@@ -68,7 +71,9 @@ const formSchema = z.object({
 
 interface AddAppointmentFormProps {
   isOpen: boolean;
-  patients: (typeof patientsTable.$inferSelect)[];
+  patients: (typeof patientsTable.$inferSelect & {
+    pets: (typeof petsTable.$inferSelect)[];
+  })[];
   doctors: (typeof veterinariansTable.$inferSelect)[];
   onSuccess?: () => void;
 }
@@ -84,6 +89,7 @@ const AddAppointmentForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       patientId: "",
+      petId: "",
       doctorId: "",
       appointmentPrice: 0,
       date: undefined,
@@ -93,7 +99,18 @@ const AddAppointmentForm = ({
 
   const selectedDoctorId = form.watch("doctorId");
   const selectedPatientId = form.watch("patientId");
+  const selectedPetId = form.watch("petId");
   const selectedDate = form.watch("date");
+
+  const selectedPatient = patients.find((p) => p.id === selectedPatientId);
+
+  useEffect(() => {
+    if (selectedPatientId) {
+      form.resetField("petId", { defaultValue: "" });
+    } else {
+      form.resetField("petId", { defaultValue: "" });
+    }
+  }, [selectedPatientId, form]);
 
   const { data: availableTimes } = useQuery({
     queryKey: ["available-times", selectedDate, selectedDoctorId],
@@ -123,6 +140,7 @@ const AddAppointmentForm = ({
     if (isOpen) {
       form.reset({
         patientId: "",
+        petId: "",
         doctorId: "",
         appointmentPrice: 0,
         date: undefined,
@@ -143,7 +161,10 @@ const AddAppointmentForm = ({
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createAppointmentAction.execute({
-      ...values,
+      petId: values.petId,
+      doctorId: values.doctorId,
+      date: values.date,
+      time: values.time,
       appointmentPriceInCents: values.appointmentPrice * 100,
     });
   };
@@ -178,14 +199,16 @@ const AddAppointmentForm = ({
             name="patientId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Paciente</FormLabel>
+                <FormLabel>Tutor(a)</FormLabel>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um paciente" />
+                      <SelectValue placeholder="Selecione um tutor(a)" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -203,6 +226,53 @@ const AddAppointmentForm = ({
 
           <FormField
             control={form.control}
+            name="petId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pet</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={
+                    !selectedPatientId || !selectedPatient?.pets?.length
+                  }
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue
+                        placeholder={
+                          !selectedPatientId
+                            ? "Selecione um tutor(a) primeiro"
+                            : "Selecione um pet"
+                        }
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {selectedPatientId &&
+                    selectedPatient?.pets &&
+                    selectedPatient.pets.length > 0 ? (
+                      selectedPatient.pets.map((pet) => (
+                        <SelectItem key={pet.id} value={pet.id}>
+                          {pet.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="no-pets" disabled>
+                        {!selectedPatientId
+                          ? "Selecione um tutor(a) para ver os pets"
+                          : "Nenhum pet cadastrado para este tutor(a)"}
+                      </SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="doctorId"
             render={({ field }) => (
               <FormItem>
@@ -210,6 +280,7 @@ const AddAppointmentForm = ({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={!selectedPatientId || !selectedPetId}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
