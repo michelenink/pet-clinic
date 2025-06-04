@@ -13,7 +13,11 @@ import {
   PageTitle,
 } from "@/components/ui/page-container";
 import { db } from "@/db";
-import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
+import {
+  appointmentsTable,
+  patientsTable,
+  veterinariansTable,
+} from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AddAppointmentButton from "./_components/add-appointment-button";
@@ -38,8 +42,8 @@ const AppointmentsPage = async () => {
     db.query.patientsTable.findMany({
       where: eq(patientsTable.clinicId, session.user.clinic.id),
     }),
-    db.query.doctorsTable.findMany({
-      where: eq(doctorsTable.clinicId, session.user.clinic.id),
+    db.query.veterinariansTable.findMany({
+      where: eq(veterinariansTable.clinicId, session.user.clinic.id),
     }),
     db.query.appointmentsTable.findMany({
       where: eq(appointmentsTable.clinicId, session.user.clinic.id),

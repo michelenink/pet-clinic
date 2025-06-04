@@ -104,13 +104,13 @@ export const usersToClinicsTableRelations = relations(
 );
 
 export const clinicsTableRelations = relations(clinicsTable, ({ many }) => ({
-  doctors: many(doctorsTable),
+  doctors: many(veterinariansTable),
   patients: many(patientsTable),
   appointments: many(appointmentsTable),
   usersToClinics: many(usersToClinicsTable),
 }));
 
-export const doctorsTable = pgTable("doctors", {
+export const veterinariansTable = pgTable("doctors", {
   id: uuid("id").defaultRandom().primaryKey(),
   clinicId: uuid("clinic_id")
     .notNull()
@@ -130,11 +130,11 @@ export const doctorsTable = pgTable("doctors", {
     .$onUpdate(() => new Date()),
 });
 
-export const doctorsTableRelations = relations(
-  doctorsTable,
+export const veterinariansTableRelations = relations(
+  veterinariansTable,
   ({ many, one }) => ({
     clinic: one(clinicsTable, {
-      fields: [doctorsTable.clinicId],
+      fields: [veterinariansTable.clinicId],
       references: [clinicsTable.id],
     }),
     appointments: many(appointmentsTable),
@@ -181,7 +181,7 @@ export const appointmentsTable = pgTable("appointments", {
     .references(() => patientsTable.id, { onDelete: "cascade" }),
   doctorId: uuid("doctor_id")
     .notNull()
-    .references(() => doctorsTable.id, { onDelete: "cascade" }),
+    .references(() => veterinariansTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -199,9 +199,9 @@ export const appointmentsTableRelations = relations(
       fields: [appointmentsTable.patientId],
       references: [patientsTable.id],
     }),
-    doctor: one(doctorsTable, {
+    doctor: one(veterinariansTable, {
       fields: [appointmentsTable.doctorId],
-      references: [doctorsTable.id],
+      references: [veterinariansTable.id],
     }),
   }),
 );

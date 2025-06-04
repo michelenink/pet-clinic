@@ -32,7 +32,7 @@ export const appointmentsTableColumns: ColumnDef<AppointmentWithRelations>[] = [
   {
     id: "doctor",
     accessorKey: "doctor.name",
-    header: "Médico",
+    header: "Veterinário",
     cell: (params) => {
       const appointment = params.row.original;
       return `${appointment.doctor.name}`;

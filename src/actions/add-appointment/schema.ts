@@ -5,7 +5,7 @@ export const addAppointmentSchema = z.object({
     message: "Paciente é obrigatório.",
   }),
   doctorId: z.string().uuid({
-    message: "Médico é obrigatório.",
+    message: "Veterinário é obrigatório.",
   }),
   date: z.date({
     message: "Data é obrigatória.",

@@ -3,12 +3,14 @@ import "dayjs/locale/pt-br";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { doctorsTable } from "@/db/schema";
+import { veterinariansTable } from "@/db/schema";
 
 dayjs.extend(utc);
 dayjs.locale("pt-br");
 
-export const getAvailability = (doctor: typeof doctorsTable.$inferSelect) => {
+export const getAvailability = (
+  doctor: typeof veterinariansTable.$inferSelect,
+) => {
   const from = dayjs()
     .utc()
     .date(doctor.availableFromWeekDay)

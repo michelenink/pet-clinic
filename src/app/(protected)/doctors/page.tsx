@@ -12,7 +12,7 @@ import {
   PageTitle,
 } from "@/components/ui/page-container";
 import { db } from "@/db";
-import { doctorsTable } from "@/db/schema";
+import { veterinariansTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AddDoctorButton from "./_components/add-doctor-button";
@@ -33,17 +33,17 @@ const DoctorsPage = async () => {
     redirect("/clinic-form");
   }
 
-  const doctors = await db.query.doctorsTable.findMany({
-    where: eq(doctorsTable.clinicId, session.user.clinic.id),
+  const doctors = await db.query.veterinariansTable.findMany({
+    where: eq(veterinariansTable.clinicId, session.user.clinic.id),
   });
 
   return (
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Médicos</PageTitle>
+          <PageTitle>Veterinários</PageTitle>
           <PageDescription>
-            Gerencie os médicos cadastrados no sistema
+            Gerencie os veterinários cadastrados no sistema
           </PageDescription>
         </PageHeaderContent>
         <PageActions>

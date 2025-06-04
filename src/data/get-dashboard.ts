@@ -2,7 +2,11 @@ import dayjs from "dayjs";
 import { and, count, desc, eq, gte, lte, sql, sum } from "drizzle-orm";
 
 import { db } from "@/db";
-import { appointmentsTable, doctorsTable, patientsTable } from "@/db/schema";
+import {
+  appointmentsTable,
+  patientsTable,
+  veterinariansTable,
+} from "@/db/schema";
 
 interface Params {
   from: string;
@@ -63,36 +67,39 @@ export const getDashboard = async ({ from, to, session }: Params) => {
       .select({
         total: count(),
       })
-      .from(doctorsTable)
-      .where(eq(doctorsTable.clinicId, session.user.clinic.id)),
+      .from(veterinariansTable)
+      .where(eq(veterinariansTable.clinicId, session.user.clinic.id)),
     db
       .select({
-        id: doctorsTable.id,
-        name: doctorsTable.name,
-        avatarImageUrl: doctorsTable.avatarImageUrl,
-        specialty: doctorsTable.specialty,
+        id: veterinariansTable.id,
+        name: veterinariansTable.name,
+        avatarImageUrl: veterinariansTable.avatarImageUrl,
+        specialty: veterinariansTable.specialty,
         appointments: count(appointmentsTable.id),
       })
-      .from(doctorsTable)
+      .from(veterinariansTable)
       .leftJoin(
         appointmentsTable,
         and(
-          eq(appointmentsTable.doctorId, doctorsTable.id),
+          eq(appointmentsTable.doctorId, veterinariansTable.id),
           gte(appointmentsTable.date, new Date(from)),
           lte(appointmentsTable.date, new Date(to)),
         ),
       )
-      .where(eq(doctorsTable.clinicId, session.user.clinic.id))
-      .groupBy(doctorsTable.id)
+      .where(eq(veterinariansTable.clinicId, session.user.clinic.id))
+      .groupBy(veterinariansTable.id)
       .orderBy(desc(count(appointmentsTable.id)))
       .limit(10),
     db
       .select({
-        specialty: doctorsTable.specialty,
+        specialty: veterinariansTable.specialty,
         appointments: count(appointmentsTable.id),
       })
       .from(appointmentsTable)
-      .innerJoin(doctorsTable, eq(appointmentsTable.doctorId, doctorsTable.id))
+      .innerJoin(
+        veterinariansTable,
+        eq(appointmentsTable.doctorId, veterinariansTable.id),
+      )
       .where(
         and(
           eq(appointmentsTable.clinicId, session.user.clinic.id),
@@ -100,7 +107,7 @@ export const getDashboard = async ({ from, to, session }: Params) => {
           lte(appointmentsTable.date, new Date(to)),
         ),
       )
-      .groupBy(doctorsTable.specialty)
+      .groupBy(veterinariansTable.specialty)
       .orderBy(desc(count(appointmentsTable.id))),
     db.query.appointmentsTable.findMany({
       where: and(

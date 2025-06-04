@@ -42,7 +42,7 @@ export function SubscriptionPlan({
     },
   });
   const features = [
-    "Cadastro de até 3 médicos",
+    "Cadastro de até 3 Veterinários",
     "Agendamentos ilimitados",
     "Métricas básicas",
     "Cadastro de pacientes",

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 import { db } from "@/db";
-import { doctorsTable } from "@/db/schema";
+import { veterinariansTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { actionClient } from "@/lib/next-safe-action";
 
@@ -43,7 +43,7 @@ export const upsertDoctor = actionClient
     }
 
     await db
-      .insert(doctorsTable)
+      .insert(veterinariansTable)
       .values({
         ...parsedInput,
         id: parsedInput.id,
@@ -52,7 +52,7 @@ export const upsertDoctor = actionClient
         availableToTime: availableToTimeUtc.format("HH:mm:ss"),
       })
       .onConflictDoUpdate({
-        target: [doctorsTable.id],
+        target: [veterinariansTable.id],
         set: {
           ...parsedInput,
         },

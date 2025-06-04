@@ -33,13 +33,13 @@ import {
 } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { doctorsTable } from "@/db/schema";
+import { veterinariansTable } from "@/db/schema";
 
 import { getAvailability } from "../_helpers/availability";
 import UpsertDoctorForm from "./upsert-doctor-form";
 
 interface DoctorCardProps {
-  doctor: typeof doctorsTable.$inferSelect;
+  doctor: typeof veterinariansTable.$inferSelect;
 }
 
 const DoctorCard = ({ doctor }: DoctorCardProps) => {
@@ -48,10 +48,10 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
 
   const deleteDoctorAction = useAction(deleteDoctor, {
     onSuccess: () => {
-      toast.success("Médico deletado com sucesso.");
+      toast.success("Veterinário deletado com sucesso.");
     },
     onError: () => {
-      toast.error("Erro ao deletar médico.");
+      toast.error("Erro ao deletar Veterinário.");
     },
   });
 
@@ -121,17 +121,17 @@ const DoctorCard = ({ doctor }: DoctorCardProps) => {
           <AlertDialogTrigger asChild>
             <Button variant="outline" className="w-full">
               <TrashIcon className="mr-2 h-4 w-4" />
-              Deletar médico
+              Deletar Veterinário
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>
-                Tem certeza que deseja deletar o médico?
+                Tem certeza que deseja deletar o Veterinário?
               </AlertDialogTitle>
               <AlertDialogDescription>
-                Esta ação não pode ser revertida. Isso irá remover o médico e
-                todas as consultas agendadas para ele.
+                Esta ação não pode ser revertida. Isso irá remover o Veterinário
+                e todas as consultas agendadas para ele.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { doctorsTable } from "@/db/schema";
+import { veterinariansTable } from "@/db/schema";
 
 import { medicalSpecialties } from "../_constants";
 import { TimeSelectField } from "./fields/time-select-field";
@@ -68,7 +68,7 @@ const formSchema = z
 
 interface UpsertDoctorFormProps {
   isOpen?: boolean;
-  doctor?: typeof doctorsTable.$inferSelect;
+  doctor?: typeof veterinariansTable.$inferSelect;
   onSuccess?: () => void;
 }
 
@@ -119,11 +119,11 @@ const UpsertDoctorForm = ({
 
   const upsertDoctorAction = useAction(upsertDoctor, {
     onSuccess: () => {
-      toast.success("Médico adicionado com sucesso.");
+      toast.success("Veterinário adicionado com sucesso.");
       onSuccess?.();
     },
     onError: () => {
-      toast.error("Erro ao adicionar médico.");
+      toast.error("Erro ao adicionar Veterinário.");
     },
   });
 
@@ -141,12 +141,12 @@ const UpsertDoctorForm = ({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>
-          {doctor ? "Editar médico" : "Adicionar médico"}
+          {doctor ? "Editar Veterinário" : "Adicionar Veterinário"}
         </DialogTitle>
         <DialogDescription>
           {doctor
-            ? "Edite as informações do médico"
-            : "Adicione um novo médico ao sistema"}
+            ? "Edite as informações do Veterinário"
+            : "Adicione um novo Veterinário ao sistema"}
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>

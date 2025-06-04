@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { generateTimeSlots } from "@/app/helpers/time";
 import { db } from "@/db";
-import { appointmentsTable, doctorsTable } from "@/db/schema";
+import { appointmentsTable, veterinariansTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { actionClient } from "@/lib/next-safe-action";
 
@@ -33,11 +33,11 @@ export const getAvailableTimes = actionClient
     if (!session.user.clinic) {
       throw new Error("Clínica não encontrada");
     }
-    const doctor = await db.query.doctorsTable.findFirst({
-      where: eq(doctorsTable.id, parsedInput.doctorId),
+    const doctor = await db.query.veterinariansTable.findFirst({
+      where: eq(veterinariansTable.id, parsedInput.doctorId),
     });
     if (!doctor) {
-      throw new Error("Médico não encontrado");
+      throw new Error("Veterinário não encontrado");
     }
     const selectedDayOfWeek = dayjs(parsedInput.date).day();
     const doctorIsAvailable =

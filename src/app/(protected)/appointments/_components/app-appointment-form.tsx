@@ -45,7 +45,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { doctorsTable, patientsTable } from "@/db/schema";
+import { patientsTable, veterinariansTable } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -53,7 +53,7 @@ const formSchema = z.object({
     message: "Paciente é obrigatório.",
   }),
   doctorId: z.string().min(1, {
-    message: "Médico é obrigatório.",
+    message: "Veterinário é obrigatório.",
   }),
   appointmentPrice: z.number().min(1, {
     message: "Valor da consulta é obrigatório.",
@@ -69,7 +69,7 @@ const formSchema = z.object({
 interface AddAppointmentFormProps {
   isOpen: boolean;
   patients: (typeof patientsTable.$inferSelect)[];
-  doctors: (typeof doctorsTable.$inferSelect)[];
+  doctors: (typeof veterinariansTable.$inferSelect)[];
   onSuccess?: () => void;
 }
 
@@ -206,14 +206,14 @@ const AddAppointmentForm = ({
             name="doctorId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Médico</FormLabel>
+                <FormLabel>Veterinário</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um médico" />
+                      <SelectValue placeholder="Selecione um Veterinário" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
