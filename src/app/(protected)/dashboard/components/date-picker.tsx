@@ -3,7 +3,7 @@
 import { addMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { parseAsIsoDate, useQueryState } from "nuqs";
+import { createParser, useQueryState } from "nuqs";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
@@ -16,16 +16,44 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+const parseAsLocalDate = createParser({
+  parse: (value) => {
+    const [year, month, day] = (value ?? "").split("-").map(Number);
+    if (!year || !month || !day || isNaN(year) || isNaN(month) || isNaN(day))
+      return null;
+
+    const date = new Date(year, month - 1, day);
+
+    if (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    ) {
+      return date;
+    }
+    return null;
+  },
+  serialize: (date: Date | null): string => {
+    if (date instanceof Date && !isNaN(date.valueOf())) {
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+    return "";
+  },
+});
+
 export function DatePicker({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [from, setFrom] = useQueryState(
     "from",
-    parseAsIsoDate.withDefault(new Date()),
+    parseAsLocalDate.withDefault(new Date()),
   );
   const [to, setTo] = useQueryState(
     "to",
-    parseAsIsoDate.withDefault(addMonths(new Date(), 1)),
+    parseAsLocalDate.withDefault(addMonths(new Date(), 1)),
   );
 
   const handleDateSelect = (dateRange: DateRange | undefined) => {
