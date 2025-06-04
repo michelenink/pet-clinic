@@ -81,7 +81,13 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b p-4">
-        <Image src="/logo.svg" alt="Doutor Agenda" width={136} height={28} />
+        <Image
+          className="mx-auto"
+          src="/logo.svg"
+          alt="Pet Clinic"
+          width={136}
+          height={28}
+        />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
