@@ -98,7 +98,7 @@ const AppointmentsChart = ({
                     if (name === "revenue") {
                       return (
                         <>
-                          <div className="h-3 w-3 rounded bg-[#10B981]" />
+                          <div className="bg-primary h-3 w-3 rounded" />
                           <span className="text-muted-foreground">
                             Faturamento:
                           </span>
@@ -142,8 +142,8 @@ const AppointmentsChart = ({
               yAxisId="right"
               type="monotone"
               dataKey="revenue"
-              stroke="var(--color-revenue)"
-              fill="var(--color-revenue)"
+              stroke="var(--color-primary)"
+              fill="var(--color-primary)"
               fillOpacity={0.2}
               strokeWidth={2}
             />
