@@ -2,7 +2,7 @@
 
 import { addMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { createParser, useQueryState } from "nuqs";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
@@ -55,13 +55,16 @@ export function DatePicker({
     "to",
     parseAsLocalDate.withDefault(addMonths(new Date(), 1)),
   );
-
   const handleDateSelect = (dateRange: DateRange | undefined) => {
     if (dateRange?.from) {
-      setFrom(dateRange.from);
+      setFrom(dateRange.from, {
+        shallow: false,
+      });
     }
     if (dateRange?.to) {
-      setTo(dateRange.to);
+      setTo(dateRange.to, {
+        shallow: false,
+      });
     }
   };
 
