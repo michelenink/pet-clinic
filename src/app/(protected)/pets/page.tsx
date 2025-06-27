@@ -3,13 +3,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import {
-  PageActions,
-  PageContainer,
-  PageContent,
-  PageDescription,
-  PageHeader,
-  PageHeaderContent,
-  PageTitle,
+    PageActions,
+    PageContainer,
+    PageContent,
+    PageDescription,
+    PageHeader,
+    PageHeaderContent,
+    PageTitle,
 } from "@/components/ui/page-container";
 import { db } from "@/db";
 import { patientsTable, petsTable } from "@/db/schema";
@@ -28,9 +28,6 @@ export default async function PetsPage() {
   }
   if (!session.user.clinic) {
     redirect("/clinic-form");
-  }
-  if (!session.user.plan) {
-    redirect("/new-subscription");
   }
 
   let pets: (typeof petsTable.$inferSelect & {

@@ -4,19 +4,19 @@ import { redirect } from "next/navigation";
 
 import { DataTable } from "@/components/ui/data-table";
 import {
-  PageActions,
-  PageContainer,
-  PageContent,
-  PageDescription,
-  PageHeader,
-  PageHeaderContent,
-  PageTitle,
+    PageActions,
+    PageContainer,
+    PageContent,
+    PageDescription,
+    PageHeader,
+    PageHeaderContent,
+    PageTitle,
 } from "@/components/ui/page-container";
 import { db } from "@/db";
 import {
-  appointmentsTable,
-  patientsTable,
-  veterinariansTable,
+    appointmentsTable,
+    patientsTable,
+    veterinariansTable,
 } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
@@ -33,9 +33,6 @@ const AppointmentsPage = async () => {
   }
   if (!session.user.clinic) {
     redirect("/clinic-form");
-  }
-  if (!session.user.plan) {
-    redirect("/new-subscription");
   }
 
   const [patients, doctors, appointments] = await Promise.all([

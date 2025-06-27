@@ -34,11 +34,25 @@ const SubscriptionPage = async () => {
         </PageHeaderContent>
       </PageHeader>
       <PageContent>
-        <SubscriptionPlan
-          className="w-[350px]"
-          active={session.user.plan === "essential"}
-          userEmail={session.user.email}
-        />
+        <div className="max-w-2xl">
+          {!session.user.plan && (
+            <div className="mb-6 rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-950/20">
+              <div className="flex">
+                <div className="ml-3">
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    <strong>Modo Demonstração:</strong> Você está usando o sistema em modo gratuito. 
+                    Para acessar recursos avançados e suporte prioritário, considere fazer uma assinatura.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <SubscriptionPlan
+            className="w-[350px]"
+            active={session.user.plan === "essential"}
+            userEmail={session.user.email}
+          />
+        </div>
       </PageContent>
     </PageContainer>
   );

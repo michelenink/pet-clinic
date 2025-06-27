@@ -6,8 +6,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
 
-import { sendEmail } from "./email";
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -68,33 +66,6 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
-    sendResetPassword: async ({ user, url, token: _token }, _request) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const unusedToken = _token;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const unusedRequest = _request;
-      await sendEmail({
-        to: user.email,
-        subject: "Redefina sua senha",
-        text: `Clique no link para redefinir sua senha: ${url}`,
-        // html: `<p>Clique no link para redefinir sua senha: <a href="${url}">Redefinir Senha</a></p>`
-      });
-    },
-  },
-  emailVerification: {
-    sendVerificationEmail: async ({ user, url, token: _token }, _request) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const unusedToken = _token;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const unusedRequest = _request;
-      // TODO: Create a more user-friendly email template
-      await sendEmail({
-        to: user.email,
-        subject: "Verifique seu endereço de e-mail",
-        text: `Clique no link para verificar seu e-mail: ${url}`,
-        // html: `<p>Clique no link para verificar seu e-mail: <a href="${url}">Verificar E-mail</a></p>`
-      });
-    },
+    requireEmailVerification: false,
   },
 });

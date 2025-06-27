@@ -1,138 +1,114 @@
 "use client";
 
-import { Menu, PawPrint, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-    setMobileMenuOpen(false); // Close mobile menu after clicking
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <PawPrint className="h-6 w-6 text-blue-600" />
-            <span className="text-xl font-bold">PetClinic</span>
-          </Link>
-        </div>
+    <header className="border-b bg-white/90 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/Logo.svg"
+              alt="PetClinic Logo"
+              width={32}
+              height={32}
+              className="h-24 w-24"
+            />
+          </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-6 md:flex">
-          <button
-            onClick={() => scrollToSection("recursos")}
-            className="cursor-pointer text-sm font-medium transition-colors hover:text-blue-600"
-          >
-            Recursos
-          </button>
-          <button
-            onClick={() => scrollToSection("precos")}
-            className="cursor-pointer text-sm font-medium transition-colors hover:text-blue-600"
-          >
-            Preços
-          </button>
-          <button
-            onClick={() => scrollToSection("sobre")}
-            className="cursor-pointer text-sm font-medium transition-colors hover:text-blue-600"
-          >
-            Sobre
-          </button>
-          <button
-            onClick={() => scrollToSection("contato")}
-            className="cursor-pointer text-sm font-medium transition-colors hover:text-blue-600"
-          >
-            Contato
-          </button>
-        </nav>
-
-        {/* Desktop Auth Buttons */}
-        <div className="hidden items-center gap-4 md:flex">
-          <Button variant="outline" asChild>
-            <Link href="/authentication">Login</Link>
-          </Button>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="flex items-center justify-center md:hidden"
-          onClick={toggleMobileMenu}
-          aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 flex flex-col bg-white p-6 md:hidden">
-          <nav className="mb-8 flex flex-col gap-6">
-            <button
-              onClick={() => scrollToSection("recursos")}
-              className="text-left text-lg font-medium transition-colors hover:text-blue-600"
-            >
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="#recursos" className="text-gray-600 hover:text-gray-900 transition-colors">
               Recursos
-            </button>
-            <button
-              onClick={() => scrollToSection("precos")}
-              className="text-left text-lg font-medium transition-colors hover:text-blue-600"
-            >
+            </Link>
+            <Link href="#precos" className="text-gray-600 hover:text-gray-900 transition-colors">
               Preços
-            </button>
-            <button
-              onClick={() => scrollToSection("sobre")}
-              className="text-left text-lg font-medium transition-colors hover:text-blue-600"
-            >
+            </Link>
+            <Link href="#sobre" className="text-gray-600 hover:text-gray-900 transition-colors">
               Sobre
-            </button>
-            <button
-              onClick={() => scrollToSection("contato")}
-              className="text-left text-lg font-medium transition-colors hover:text-blue-600"
-            >
+            </Link>
+            <Link href="#contato" className="text-gray-600 hover:text-gray-900 transition-colors">
               Contato
-            </button>
+            </Link>
           </nav>
 
-          <div className="flex flex-col gap-4">
-            <Button variant="outline" className="w-full" asChild>
-              <Link
-                href="/authentication"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Login
-              </Link>
-            </Button>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
-              <Link
-                href="/authentication"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Começar agora
-              </Link>
-            </Button>
+          <div className="hidden md:flex items-center gap-4">
+            <Link href="/authentication">
+              <Button variant="outline">Fazer Login</Button>
+            </Link>
+            <Link href="/authentication">
+              <Button className="bg-primary text-primary-foreground">
+                Começar Agora
+              </Button>
+            </Link>
           </div>
+
+          <button
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Menu"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+              <span className="block w-6 h-0.5 bg-gray-600"></span>
+              <span className="block w-6 h-0.5 bg-gray-600"></span>
+              <span className="block w-6 h-0.5 bg-gray-600"></span>
+            </div>
+          </button>
         </div>
-      )}
+
+        {isMenuOpen && (
+          <div className="md:hidden border-t py-4">
+            <nav className="flex flex-col space-y-4">
+              <Link 
+                href="#recursos" 
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Recursos
+              </Link>
+              <Link 
+                href="#precos" 
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Preços
+              </Link>
+              <Link 
+                href="#sobre" 
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Sobre
+              </Link>
+              <Link 
+                href="#contato" 
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contato
+              </Link>
+              <div className="flex flex-col gap-2 pt-4">
+                <Link href="/authentication">
+                  <Button variant="outline" className="w-full">
+                    Fazer Login
+                  </Button>
+                </Link>
+                <Link href="/authentication">
+                  <Button className="bg-primary text-primary-foreground w-full">
+                    Começar Agora
+                  </Button>
+                </Link>
+              </div>
+            </nav>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

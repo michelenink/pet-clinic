@@ -38,7 +38,6 @@ Este sistema foi desenvolvido para modernizar a gestão de clínicas veterinári
 - **Drizzle ORM** - ORM type-safe para TypeScript
 - **Better Auth** - Sistema de autenticação
 - **Next Safe Action** - Server Actions tipadas
-- **Resend** - Serviço de e-mail
 
 ### Payments & Subscription
 
@@ -84,21 +83,21 @@ Este sistema foi desenvolvido para modernizar a gestão de clínicas veterinári
 - Agenda dinâmica por veterinário
 - Verificação de disponibilidade
 - Histórico de consultas
-- Notificações por e-mail
+- Gestão completa de horários
 
-### 💳 Sistema de Pagamentos
+### 💳 Sistema de Pagamentos (Opcional)
 
 - Integração completa com Stripe
-- Planos de assinatura
+- Planos de assinatura opcionais
 - Webhooks para sincronização
+- Modo demonstração gratuito
 - Histórico de transações
 
 ### 🔐 Autenticação & Segurança
 
 - Login com e-mail/senha ou Google
-- Verificação de e-mail obrigatória
-- Recuperação de senha
 - Sessões seguras
+- OAuth com Google
 
 ## 🛠️ Instalação e Configuração
 
@@ -108,7 +107,6 @@ Este sistema foi desenvolvido para modernizar a gestão de clínicas veterinári
 - PostgreSQL 12+
 - Conta Stripe (para pagamentos)
 - Conta Google Cloud (para OAuth)
-- Conta Resend (para e-mails)
 
 ### 1. Clone o repositório
 
@@ -143,9 +141,6 @@ GOOGLE_CLIENT_SECRET="seu_google_client_secret"
 STRIPE_SECRET_KEY="sk_test_..."
 STRIPE_PUBLISHABLE_KEY="pk_test_..."
 STRIPE_WEBHOOK_SECRET="whsec_..."
-
-# Email (Resend)
-RESEND_API_KEY="re_..."
 ```
 
 ### 4. Configure o banco de dados

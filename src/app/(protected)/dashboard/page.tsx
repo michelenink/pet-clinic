@@ -6,21 +6,21 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import {
-  PageActions,
-  PageContainer,
-  PageContent,
-  PageDescription,
-  PageHeader,
-  PageHeaderContent,
-  PageTitle,
+    PageActions,
+    PageContainer,
+    PageContent,
+    PageDescription,
+    PageHeader,
+    PageHeaderContent,
+    PageTitle,
 } from "@/components/ui/page-container";
 import { ThemeToggleButton } from "@/components/ui/theme-toggle-button";
 import { getDashboard } from "@/data/get-dashboard";
 import { auth } from "@/lib/auth";
 
 import {
-  appointmentsTableColumns,
-  type AppointmentWithRelations,
+    appointmentsTableColumns,
+    type AppointmentWithRelations,
 } from "../appointments/_components/table-columns";
 import AppointmentsChart from "./components/appointments-chart";
 import DatePicker from "./components/date-picker";
@@ -45,9 +45,6 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   }
   if (!session.user.clinic) {
     redirect("/clinic-form");
-  }
-  if (!session.user.plan) {
-    redirect("/new-subscription");
   }
 
   const { from, to } = await searchParams;
