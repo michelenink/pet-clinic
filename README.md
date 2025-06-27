@@ -213,4 +213,4 @@ O projeto utiliza um design system baseado em:
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-[Visite meu GitHub](https://github.com/michelenink)
+[Visite meu linkedin](https://www.linkedin.com/in/michelenink/)
