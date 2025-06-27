@@ -208,9 +208,4 @@ O projeto utiliza um design system baseado em:
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-## **Linkedin** - [https://www.linkedin.com/in/michelenink/]
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Desenvolvido%20com-❤️-red" alt="Feito com amor">
-  <img src="https://img.shields.io/badge/TypeScript-Lovers-blue" alt="TypeScript">
-</div>
+[Visite meu linkedin](https://www.linkedin.com/in/michelenink/)
